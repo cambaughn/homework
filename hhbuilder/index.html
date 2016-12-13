@@ -50,7 +50,42 @@
         </div>
         <pre class="debug"></pre>
         <script>
-            // your code goes here ...
+            // Validation
+
+            function validateAge() {
+              var age = document.querySelector('input[name=age]').value;
+              // Check if no input, not a number, or not greater than 0
+              if (!age || !+age || +age <= 0) {
+                // TODO: show an error message
+                return null;
+              } else {
+                return age;
+              }
+            }
+
+            function validateRelationship() {
+              var relationship = document.querySelector('select').value;
+
+              if (!relationship) {
+                return null;
+              } else {
+                return relationship;
+              }
+            }
+
+
+
+
+            document.querySelector('.add').onclick = function(e) {
+              e.preventDefault();
+
+              var age = validateAge();
+              var relationship = validateRelationship();
+              var smoker = document.querySelector('input[name=smoker]').checked;
+
+              console.log(age, relationship, smoker)
+
+            }
         </script>
     </body>
 </html>
