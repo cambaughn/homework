@@ -59,7 +59,7 @@
                 // TODO: show an error message
                 return null;
               } else {
-                return age;
+                return +age;
               }
             }
 
@@ -67,6 +67,7 @@
               var relationship = document.querySelector('select').value;
 
               if (!relationship) {
+                // TODO: show an error message
                 return null;
               } else {
                 return relationship;
@@ -75,7 +76,7 @@
 
 
 
-
+            // Handle validation of entire form
             document.querySelector('.add').onclick = function(e) {
               e.preventDefault();
 
@@ -83,9 +84,64 @@
               var relationship = validateRelationship();
               var smoker = document.querySelector('input[name=smoker]').checked;
 
-              console.log(age, relationship, smoker)
+              if (age && relationship) {
+                addHouseholdMember(age, relationship, smoker);
+                // TODO: Clear inputs
+              }
+            }
+
+
+            var household = [];
+            var listDisplayLength = 0;
+
+            // Add and remove members from the list
+            function addHouseholdMember(age, relationship, smoker) {
+              var member = {
+                age: age,
+                relationship: relationship,
+                smoker: smoker,
+                id: household.length
+              };
+
+              console.log(member);
+
+              household.push(member);
+              updateListDisplay();
+            }
+
+            function removeHouseholdMember(id) {
+              console.log(this.id)
+            }
+
+            // Check the disparity between the in-memory list and what is displayed
+            // Update if not consistent
+            function updateListDisplay() {
+              let list = document.querySelector('.household');
+
+              if (listDisplayLength < household.length) {
+                for (var i = listDisplayLength; i < household.length; i++) {
+                  var currentMember = household[i];
+                  var li = document.createElement("li");
+
+                  var text = document.createTextNode('Age: ' + currentMember.age + ', Relationship: ' + currentMember. relationship + ', Smoker: ' + currentMember.smoker + '   ');
+                  var button = document.createElement('BUTTON');
+                  var buttonText = document.createTextNode('delete');
+
+                  button.setAttribute('id', currentMember.id);
+                  button.appendChild(buttonText);
+                  button.onclick = removeHouseholdMember.bind(button);
+                  li.appendChild(text);
+                  li.appendChild(button);
+                  list.appendChild(li);
+                }
+                listDisplayLength = household.length;
+              }
+            }
+
+            function submitList() {
 
             }
+
         </script>
     </body>
 </html>
