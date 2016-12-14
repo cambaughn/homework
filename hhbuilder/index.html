@@ -51,7 +51,6 @@
         <pre class="debug"></pre>
         <script>
             // Validation
-
             function validateAge() {
               var age = document.querySelector('input[name=age]').value;
               // Check if no input, not a number, or not greater than 0
@@ -75,8 +74,7 @@
             }
 
 
-
-            // Handle validation of entire form
+            // Handle validation of entire form when you click add
             document.querySelector('.add').onclick = function(e) {
               e.preventDefault();
 
@@ -87,10 +85,34 @@
               if (age && relationship) {
                 addHouseholdMember(age, relationship, smoker);
                 // TODO: Clear inputs
+                document.querySelector('input[name=age]').value = '';
+                document.querySelector('select').value = '';
+                document.querySelector('input[name=smoker]').checked = false;
               }
             }
 
 
+            // Handle Submit and stringify JSON
+            document.querySelector('form').addEventListener("submit", submit);
+
+            function submit(e) {
+              e.preventDefault();
+              if (household.length > 0) {
+                var householdInfo = JSON.stringify(household);
+                console.log(householdInfo);
+
+                // Reset the list and display
+                household = [];
+                updateListDisplay();
+
+                // Add to debug section
+                document.querySelector('.debug').innerHTML = householdInfo;
+
+                // POST would go here
+              }
+            }
+
+            // Set up household structure and keep track of DOM insertion
             var household = [];
             var listDisplayLength = 0;
 
@@ -103,15 +125,15 @@
                 id: household.length
               };
 
-              console.log(member);
-
               household.push(member);
               updateListDisplay();
             }
 
             function removeHouseholdMember(id) {
-              console.log(this.id)
+              household.splice(this.id, 1);
+              updateListDisplay();
             }
+
 
             // Check the disparity between the in-memory list and what is displayed
             // Update if not consistent
@@ -135,11 +157,11 @@
                   list.appendChild(li);
                 }
                 listDisplayLength = household.length;
+              } else if (listDisplayLength > household.length) {
+                list.innerHTML = '';
+                listDisplayLength = 0;
+                updateListDisplay();
               }
-            }
-
-            function submitList() {
-
             }
 
         </script>
